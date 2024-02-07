@@ -1,7 +1,8 @@
 // src/index.js
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import express, { Express, Request, Response } from "express";
+import express, { Express, Response } from "express";
+import session from 'express-session';
 import { sequelize } from "./config/db";
 import dbInit from "./db/init";
 import { userRoutes } from './routes/userRoutes';
@@ -13,9 +14,16 @@ const port = process.env.PORT || 3000;
 // parse application/json
 app.use(bodyParser.json())
 
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: process.env.SESSION_SECRET!,
+  resave: false,
+  saveUninitialized: true,
+}))
+
 app.use('/user', userRoutes)
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (res: Response) => {
   res.send("Express + TypeScript Server");
 });
 

@@ -5,18 +5,20 @@ interface UserAttributes {
     id: number,
     email: string,
     password: string
+    role: string
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date;
   };
   
-  export interface UserInput extends Optional<UserAttributes, 'id'> {}
+  export interface UserInput extends Optional<UserAttributes, 'id' | 'role'> {}
   export interface UserOuput extends Required<UserAttributes> {}
   
   class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     public id!: number
     public email!: string;
     public password!: string;
+    public role!: "member" | "admin"
 
     // timestamps!
     public readonly createdAt!: Date;
@@ -29,6 +31,11 @@ interface UserAttributes {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: 'member'
     },
     email: {
       type: DataTypes.STRING,
