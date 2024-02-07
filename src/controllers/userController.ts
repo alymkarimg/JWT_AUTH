@@ -1,18 +1,12 @@
 import bcrypt from 'bcryptjs'
 import { Request, Response } from 'express'
-import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
-import { User } from '../models/user'
+import User from '../db/models/user'
 
 const SECRET_KEY  = process.env.SECRET_KEY!
 
 export class UserController {
     static async register(req: Request, res: Response) {
-        const errors = validationResult(req)
-        if(!errors.isEmpty()){
-            return res.status(400).json({ errors: errors.array() });
-        }
-
         const { email, password } = req.body
 
         try {
@@ -36,11 +30,6 @@ export class UserController {
     }
 
     static async login(req: Request, res: Response) {
-        const errors = validationResult(req)
-        if(!errors.isEmpty()){
-            return res.status(400).json({ errors: errors.array() });
-        }
-
         const { email, password } = req.body
 
         try {

@@ -1,19 +1,11 @@
-const mysql = require('mysql')
-const dotenv = require('dotenv')
+import dotenv from 'dotenv';
+import { Dialect, Sequelize } from 'sequelize';
 
 dotenv.config()
 
-export const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME 
-})
 
-connection.connect((err: unknown) => {
-    if(err){
-        console.error('Error connecting to database', err)
-        return
-    }
-    console.log('connected to the database')
-})
+// Option 3: Passing parameters separately (other dialects)
+export const sequelize = new Sequelize(process.env.DB_NAME!, process.env.DB_USER!, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DRIVER as Dialect
+});
