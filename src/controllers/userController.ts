@@ -35,7 +35,7 @@ export class UserController {
         try {
             const user = await User.findOne({ where: { email }})
             if(!user){
-                return res.status(400).json({ error: 'User already exists' });
+                return res.status(400).json({ error: 'User does not exist' });
             }
 
             const isPasswordValid = await bcrypt.compare(password, user.password)
